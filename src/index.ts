@@ -17,6 +17,11 @@ const sanitizeSlackLink = (url: string): string => {
   return url.replace(/amp;/g, '')
 }
 
+slackApp.event('app_mention', async ({ say }) => {
+  console.log("catch app_mention event")
+  await say("Hellow World")
+})
+
 slackApp.event('link_shared', async ({ event, client }) => {
   let unfurls: any = {}
 
