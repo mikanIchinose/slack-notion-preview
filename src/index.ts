@@ -40,7 +40,7 @@ slackApp.event('link_shared', async ({ event, client }) => {
       title: pageData.title,
       text,
       title_link: link.url,
-      footer: pageData.breadcrumbs.join(' / '),
+      footer: "NotionPreview",
     }
   }
   await client.chat.unfurl({

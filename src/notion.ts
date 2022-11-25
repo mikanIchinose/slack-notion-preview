@@ -17,14 +17,10 @@ const NEWLINE = '\n'
 export const notionService = {
   async getPageData(
     pageId: string,
-    options = {
-      breadcrumbsDepth: 2,
-    }
-  ): Promise<{ title: string; breadcrumbs: string[] }> {
+  ): Promise<{ title: string }> {
     const page = await notionClient.pages.retrieve({ page_id: pageId })
     return {
       title: helper.getPageTitle(page),
-      breadcrumbs: await helper.getPageBreadcrumbs(page, options),
     }
   },
 
@@ -94,67 +90,6 @@ const helper = {
       title = property.title.map(x => x.plain_text).join('')
     }
     return title
-  },
-
-  async getPageBreadcrumbs(
-    page: GetPageResponse,
-    options = { breadcrumbsDepth: 2 }
-  ): Promise<string[]> {
-    if (options.breadcrumbsDepth <= 0) {
-      return []
-    }
-    // Descriminating union
-    if (!('parent' in page)) {
-      logger.error(`parent not found in ${page}`)
-      return []
-    }
-
-    let breadcrumbs: string[] = [this.getPageTitle(page)]
-
-    // Retrieving breadcrumbs
-    if (page.parent.type === 'database_id') {
-      const parentData = await this.getDatabaseData(page.parent.database_id, {
-        breadcrumbsDepth: options.breadcrumbsDepth - 1,
-      })
-      breadcrumbs = parentData.breadcrumbs.concat(breadcrumbs)
-    }
-    if (page.parent.type === 'page_id') {
-      const parentData = await notionService.getPageData(page.parent.page_id, {
-        breadcrumbsDepth: options.breadcrumbsDepth - 1,
-      })
-      breadcrumbs = parentData.breadcrumbs.concat(breadcrumbs)
-    }
-    return breadcrumbs
-  },
-
-  async getDatabaseData(
-    databaseId: string,
-    options = {
-      breadcrumbsDepth: 2,
-    }
-  ): Promise<{ breadcrumbs: string[] }> {
-    const database = await notionClient.databases.retrieve({
-      database_id: databaseId,
-    })
-
-    // Descriminating union
-    if (!('parent' in database)) {
-      logger.error(`parent not found in ${database}`)
-      return { breadcrumbs: [] }
-    }
-
-    if (database.parent.type !== 'page_id' || options.breadcrumbsDepth <= 0) {
-      return { breadcrumbs: [] }
-    }
-
-    const parentData = await notionService.getPageData(
-      database.parent.page_id,
-      {
-        // Database name is not included in breadcrumbs, so do not change the depth.
-        breadcrumbsDepth: options.breadcrumbsDepth,
-      }
-    )
-    return { breadcrumbs: parentData.breadcrumbs }
   },
 
   getBlockContent(block: GetBlockResponse): string {
