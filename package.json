@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "ts-node-dev --poll --respawn --transpile-only --files ./src/index.ts",
     "build": "tsc -p .",
-    "start": "NODE_ENV=production node dist/src/index.js"
+    "start": "tsc -p . && NODE_ENV=production node dist/src/index.js"
   },
   "dependencies": {
     "@notionhq/client": "^2.2.2",
