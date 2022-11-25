@@ -22,37 +22,38 @@ slackApp.event('app_mention', async ({ say }) => {
   await say("Hellow World")
 })
 
-slackApp.event('link_shared', async ({ event, client }) => {
-  let unfurls: any = {}
+slackApp.event('link_shared', async ({ event, client, say }) => {
+  say("I catch Link_Shared Event")
+  //let unfurls: any = {}
 
-  for (const link of event.links) {
-    logger.debug(`handling ${link.url}`)
-    if (!notionService.isNotionDomain(link.domain)) continue
+  //for (const link of event.links) {
+  //  logger.debug(`handling ${link.url}`)
+  //  if (!notionService.isNotionDomain(link.domain)) continue
 
-    const url = new URL(sanitizeSlackLink(link.url))
-    const notionPageId = notionService.getPageIdFromUrl(url)
+  //  const url = new URL(sanitizeSlackLink(link.url))
+  //  const notionPageId = notionService.getPageIdFromUrl(url)
 
-    if (notionPageId == null) {
-      logger.error(`PageId not found in ${url}`)
-      continue
-    }
-    const [pageData, text] = await Promise.all([
-      notionService.getPageData(notionPageId),
-      notionService.getPageBody(notionPageId),
-    ])
-    // Note that the key of the unfurl must be the same as the URL shared on slack.
-    unfurls[link.url] = {
-      title: pageData.title,
-      text,
-      title_link: link.url,
-      footer: "NotionPreview",
-    }
-  }
-  await client.chat.unfurl({
-    ts: event.message_ts,
-    channel: event.channel,
-    unfurls,
-  })
+  //  if (notionPageId == null) {
+  //    logger.error(`PageId not found in ${url}`)
+  //    continue
+  //  }
+  //  const [pageData, text] = await Promise.all([
+  //    notionService.getPageData(notionPageId),
+  //    notionService.getPageBody(notionPageId),
+  //  ])
+  //  // Note that the key of the unfurl must be the same as the URL shared on slack.
+  //  unfurls[link.url] = {
+  //    title: pageData.title,
+  //    text,
+  //    title_link: link.url,
+  //    footer: "NotionPreview",
+  //  }
+  //}
+  //await client.chat.unfurl({
+  //  ts: event.message_ts,
+  //  channel: event.channel,
+  //  unfurls,
+  //})
 })
 
 const main = async () => {
