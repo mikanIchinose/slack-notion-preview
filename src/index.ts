@@ -2,7 +2,7 @@ import { appEnv } from './app-env'
 appEnv.init()
 
 import { App as SlackApp, LogLevel } from '@slack/bolt'
-import { LinkUnfurls } from '@slack/web-api'
+// import { LinkUnfurls } from '@slack/web-api' // NOTE: cannot build on Glitch
 import { logger } from './logger'
 import { notionService } from './notion'
 
@@ -18,7 +18,7 @@ const sanitizeSlackLink = (url: string): string => {
 }
 
 slackApp.event('link_shared', async ({ event, client }) => {
-  let unfurls: LinkUnfurls = {}
+  let unfurls: any = {}
 
   for (const link of event.links) {
     logger.debug(`handling ${link.url}`)
