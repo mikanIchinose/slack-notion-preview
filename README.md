@@ -51,11 +51,11 @@ Since it is a web application written in Node.js, it can easily be run anywhere,
 - `SLACK_TOKEN`: Slack App token obtained in steps 2-5
 - `SLACK_SIGNING_SECRET`: Request signature verification secret obtained in step 2-6
 
-#### Running on Heroku
+<!-- #### Running on Heroku                                                                                                                            -->
 
-You can deploy from the following button
+<!-- You can deploy from the following button                                                                                                          -->
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/anycloud-inc/slack-notion-preview)
+<!-- [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/anycloud-inc/slack-notion-preview) -->
 
 ※ The page will not be displayed even if you access the URL root of the deployed app, but this is just a specification, so don't worry about it.
 
